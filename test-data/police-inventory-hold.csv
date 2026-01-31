@@ -1,0 +1,5 @@
+Store Name,Number,Status,Category,Type,Description,Cost,Age,Date,Last Sold Price,Price,Last Ticket Number
+Pell City Gold,12345,INVENTORY,Jewelry,Ring,Gold Ring,500.00,30,2024-12-01,0,750.00,T001
+Pell City Gold,12346,POLICE INVENTORY HOLD,Electronics,Laptop,Dell Laptop,800.00,95,2024-10-15,0,1200.00,T002
+Pell City Gold,12347,POLICE INVENTORY HOLD,Tools,Drill,Drill Set,150.00,105,2024-10-01,0,180.00,T003
+Pell City Gold,12348,INVENTORY,Jewelry,Necklace,Silver Chain,100.00,20,2025-01-01,0,150.00,T004

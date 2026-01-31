@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: inventory-verification-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: inventory_verification
+    ports:
+      - "5433:5432"   # Use 5433 to avoid conflict with local PostgreSQL on 5432
+    volumes:
+      - inventory_db_data:/var/lib/postgresql/data
+      - ./backend/src/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d inventory_verification"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  inventory_db_data:

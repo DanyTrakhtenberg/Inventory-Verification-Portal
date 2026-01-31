@@ -1,0 +1,15 @@
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,P2M Inventory Report,,,,,,,,,,,
+,Pcg - Pell City Gold And Pawn,,,,,,,,,,,
+,From 1/1/2020 to 1/30/2026,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+Report Date : 1/30/2026 10:00:00 AM,,,,,,,,,,,,
+,,,,,,,,,,,,
+Store Name,Number,Status,Category,Type,Description,Cost,Age,Date,Last Sold Price,Price,Last Ticket Number
+Pell City Gold,12345,Available,Jewelry,Ring,Gold Diamond Ring,500.00,30,2024-12-01,0,750.00,T001
+Pell City Gold,12346,Available,Electronics,Laptop,Dell Laptop i7,800.00,15,2025-01-15,0,1200.00,T002
+Pell City Gold,12347,Police Hold,Tools,Drill,Cordless Drill Set,150.00,95,2024-10-20,0,180.00,T003
+Pell City Gold,12348,Available,Jewelry,Necklace,Silver Chain,100.00,20,2025-01-01,0,150.00,T004
+Pell City Gold,12349,Missing,Electronics,Phone,iPhone 13,600.00,10,2025-01-20,0,900.00,T005
