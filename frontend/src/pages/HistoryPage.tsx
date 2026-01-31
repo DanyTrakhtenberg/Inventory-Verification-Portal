@@ -35,7 +35,7 @@ export function HistoryPage() {
   return (
     <div>
       <h1>Upload History</h1>
-      <div>
+      <div className="form-group" style={{ marginBottom: '1.5rem', maxWidth: 280 }}>
         <label htmlFor="filter">Filter by client</label>
         <select
           id="filter"
@@ -50,7 +50,7 @@ export function HistoryPage() {
           ))}
         </select>
       </div>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <div className="error-message">{error}</div>}
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -74,7 +74,11 @@ export function HistoryPage() {
                 <td>{u.filename}</td>
                 <td>{u.file_type}</td>
                 <td>{new Date(u.uploaded_at).toLocaleString()}</td>
-                <td>{u.overall_pass ? 'PASS' : 'FAIL'}</td>
+                <td>
+                  <span className={u.overall_pass ? 'status-pass' : 'status-fail'}>
+                    {u.overall_pass ? 'PASS' : 'FAIL'}
+                  </span>
+                </td>
                 <td>
                   <Link to={`/report/${u.id}`}>View report</Link>
                 </td>

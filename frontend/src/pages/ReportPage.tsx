@@ -20,7 +20,7 @@ export function ReportPage() {
   }, [id]);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+  if (error) return <div className="error-message">{error}</div>;
   if (!data) return null;
 
   const { upload, validations } = data;
@@ -28,15 +28,20 @@ export function ReportPage() {
   return (
     <div>
       <h1>Validation Report</h1>
-      <p>
-        <strong>File:</strong> {upload.filename} | <strong>Client:</strong> {upload.client_name}
-      </p>
-      <p>
-        <strong>Overall:</strong>{' '}
-        <span style={{ color: upload.overall_pass ? 'green' : 'red', fontWeight: 'bold' }}>
-          {upload.overall_pass ? 'PASS' : 'FAIL'}
-        </span>
-      </p>
+      <div className="page-card" style={{ marginBottom: '1.5rem' }}>
+        <p style={{ margin: '0 0 0.5rem' }}>
+          <strong>File:</strong> {upload.filename}
+        </p>
+        <p style={{ margin: '0 0 0.5rem' }}>
+          <strong>Client:</strong> {upload.client_name}
+        </p>
+        <p style={{ margin: 0 }}>
+          <strong>Overall:</strong>{' '}
+          <span className={upload.overall_pass ? 'status-pass' : 'status-fail'}>
+            {upload.overall_pass ? 'PASS' : 'FAIL'}
+          </span>
+        </p>
+      </div>
       <h2>Validation Rules</h2>
       <table>
         <thead>
@@ -50,20 +55,22 @@ export function ReportPage() {
           {validations.map((v) => (
             <tr key={v.id}>
               <td>{v.rule_name}</td>
-              <td style={{ color: v.passed ? 'green' : 'red' }}>
-                {v.passed ? 'PASS' : 'FAIL'}
+              <td>
+                <span className={v.passed ? 'status-pass' : 'status-fail'}>
+                  {v.passed ? 'PASS' : 'FAIL'}
+                </span>
               </td>
               <td>
-                <pre style={{ margin: 0, fontSize: '12px', whiteSpace: 'pre-wrap' }}>
-                  {JSON.stringify(v.details, null, 2)}
-                </pre>
+                <pre>{JSON.stringify(v.details, null, 2)}</pre>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <p>
-        <Link to="/history">Back to history</Link> | <Link to="/">Upload another</Link>
+      <p style={{ marginTop: '1.5rem' }}>
+        <Link to="/history">Back to history</Link>
+        {' · '}
+        <Link to="/">Upload another</Link>
       </p>
     </div>
   );

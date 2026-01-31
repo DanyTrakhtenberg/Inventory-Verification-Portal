@@ -29,10 +29,10 @@ export function UploadPage() {
   }
 
   return (
-    <div>
+    <div className="page-card">
       <h1>Upload Inventory</h1>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="form-group">
           <label htmlFor="clientName">Client Name</label>
           <input
             id="clientName"
@@ -43,7 +43,7 @@ export function UploadPage() {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="file">File (CSV or XLSX)</label>
           <input
             id="file"
@@ -53,7 +53,7 @@ export function UploadPage() {
             required
           />
         </div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && <div className="error-message">{error}</div>}
         <button type="submit" disabled={loading}>
           {loading ? 'Uploading...' : 'Upload'}
         </button>
