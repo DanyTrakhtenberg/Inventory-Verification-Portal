@@ -1,36 +1,44 @@
-import { InventoryRow, ValidationResult } from '../types/validation';
+import { InventoryRow, ValidationResult, ValidationRule } from '../types/validation';
 
-// P2M uses "POLICE INVENTORY HOLD"; also support "POLICE_HOLD"
 const POLICE_HOLD_STATUSES = ['POLICE_HOLD', 'POLICE INVENTORY HOLD'];
 
-export function validatePoliceHold(rows: InventoryRow[], headers: string[]): ValidationResult {
-  const statusCol = headers.find((h) => h === 'status');
-  if (!statusCol) {
-    return {
-      rule: 'police_hold',
-      passed: true,
-      details: { message: 'No status column - skipping check' },
-    };
-  }
+type State = {
+  statusCol: string | null;
+  items: Array<{ row: number; status: string }>;
+};
 
-  const items: Array<{ row: number; status: string }> = [];
-  rows.forEach((row, idx) => {
-    const val = row[statusCol];
+export const policeHoldRule: ValidationRule<State> = {
+  name: 'police_hold',
+  init: (headers) => ({
+    statusCol: headers.find((h) => h === 'status') ?? null,
+    items: [],
+  }),
+  processRow: (state, row, idx, _headers) => {
+    if (!state.statusCol) return;
+    const val = row[state.statusCol];
     const status = String(val ?? '').toUpperCase().trim();
     const isPoliceHold =
       POLICE_HOLD_STATUSES.includes(status) ||
       status.replace(/\s+/g, '_') === 'POLICE_HOLD';
     if (isPoliceHold) {
-      items.push({ row: idx + 2, status: String(val) });
+      state.items.push({ row: idx + 2, status: String(val) });
     }
-  });
-
-  return {
-    rule: 'police_hold',
-    passed: items.length === 0,
-    details: {
-      count: items.length,
-      items: items.length > 0 ? items : undefined,
-    },
-  };
-}
+  },
+  finalize: (state): ValidationResult => {
+    if (!state.statusCol) {
+      return {
+        rule: 'police_hold',
+        passed: true,
+        details: { message: 'No status column - skipping check' },
+      };
+    }
+    return {
+      rule: 'police_hold',
+      passed: state.items.length === 0,
+      details: {
+        count: state.items.length,
+        items: state.items.length > 0 ? state.items : undefined,
+      },
+    };
+  },
+};

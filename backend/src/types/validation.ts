@@ -14,3 +14,11 @@ export interface ParsedFile {
 }
 
 export const REQUIRED_COLUMNS = ['status', 'cost', 'price'] as const;
+
+/** Rule interface for single-pass validation - add new rules by implementing this and registering in validation.service */
+export interface ValidationRule<TState = unknown> {
+  name: string;
+  init: (headers: string[]) => TState;
+  processRow: (state: TState, row: InventoryRow, rowIndex: number, headers: string[]) => void;
+  finalize: (state: TState) => ValidationResult;
+}

@@ -1,33 +1,41 @@
-import { InventoryRow, ValidationResult } from '../types/validation';
+import { InventoryRow, ValidationResult, ValidationRule } from '../types/validation';
 
-// P2M uses "MISSING INV"; also support "MISSING"
 const MISSING_STATUSES = ['MISSING', 'MISSING INV'];
 
-export function validateMissingItems(rows: InventoryRow[], headers: string[]): ValidationResult {
-  const statusCol = headers.find((h) => h === 'status');
-  if (!statusCol) {
-    return {
-      rule: 'missing_items',
-      passed: true,
-      details: { message: 'No status column - skipping check' },
-    };
-  }
+type State = {
+  statusCol: string | null;
+  items: Array<{ row: number; status: string }>;
+};
 
-  const items: Array<{ row: number; status: string }> = [];
-  rows.forEach((row, idx) => {
-    const val = row[statusCol];
+export const missingItemsRule: ValidationRule<State> = {
+  name: 'missing_items',
+  init: (headers) => ({
+    statusCol: headers.find((h) => h === 'status') ?? null,
+    items: [],
+  }),
+  processRow: (state, row, idx, _headers) => {
+    if (!state.statusCol) return;
+    const val = row[state.statusCol];
     const status = String(val ?? '').toUpperCase().trim();
     if (MISSING_STATUSES.includes(status)) {
-      items.push({ row: idx + 2, status: String(val) });
+      state.items.push({ row: idx + 2, status: String(val) });
     }
-  });
-
-  return {
-    rule: 'missing_items',
-    passed: items.length === 0,
-    details: {
-      count: items.length,
-      items: items.length > 0 ? items : undefined,
-    },
-  };
-}
+  },
+  finalize: (state): ValidationResult => {
+    if (!state.statusCol) {
+      return {
+        rule: 'missing_items',
+        passed: true,
+        details: { message: 'No status column - skipping check' },
+      };
+    }
+    return {
+      rule: 'missing_items',
+      passed: state.items.length === 0,
+      details: {
+        count: state.items.length,
+        items: state.items.length > 0 ? state.items : undefined,
+      },
+    };
+  },
+};
