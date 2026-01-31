@@ -7,17 +7,22 @@ import './App.css';
 function App() {
   return (
     <BrowserRouter>
-      <nav style={{ marginBottom: '1rem', padding: '0.5rem', borderBottom: '1px solid #ccc' }}>
-        <Link to="/" style={{ marginRight: '1rem' }}>Upload</Link>
-        <Link to="/history">History</Link>
-      </nav>
-      <main style={{ padding: '1rem', maxWidth: '900px' }}>
-        <Routes>
-          <Route path="/" element={<UploadPage />} />
-          <Route path="/history" element={<HistoryPage />} />
-          <Route path="/report/:id" element={<ReportPage />} />
-        </Routes>
-      </main>
+      <div className="app">
+        <header className="app-header">
+          <h1 className="app-title">Inventory Verification Portal</h1>
+          <nav className="app-nav">
+            <Link to="/" className="nav-link">Upload</Link>
+            <Link to="/history" className="nav-link">History</Link>
+          </nav>
+        </header>
+        <main className="app-main">
+          <Routes>
+            <Route path="/" element={<UploadPage />} />
+            <Route path="/history" element={<HistoryPage />} />
+            <Route path="/report/:id" element={<ReportPage />} />
+          </Routes>
+        </main>
+      </div>
     </BrowserRouter>
   );
 }
